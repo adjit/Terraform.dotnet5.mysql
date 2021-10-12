@@ -1,0 +1,24 @@
+- name: web_server_playbook
+  hosts: [web_server]
+
+  tasks:
+  - name: Install Dotnet Core 5.0
+    snap:
+      name: dotnet-sdk
+      channel: 5.0
+      classic: yes
+      state: present
+
+- name: db_server_playbook
+  hosts: [db_server]
+  tasks:
+  - name: Download MySQL
+    get_url:
+      url: http://repo.mysql.com/mysql80-community-release-el8-1.noarch.rpm
+      dest: /opt/mysql
+  - name: Install package
+    yum:
+      name: /opt/mysql/mysql80-community-release-el8-1.noarch.rpm
+      state: present
+  - name: Install MySQL
+    yum: name=mysql-server state=installed
